@@ -10,17 +10,17 @@ object NavBarItems {
         BarItem(
             title = "Home",
             image = Icons.Filled.Home,
-            route = "home"
+            route = NavRoutes.Home.route
         ),
         BarItem(
             title = "Contacts",
             image = Icons.Filled.Face,
-            route = "contacts"
+            route = NavRoutes.Contacts.route
         ),
         BarItem(
             title = "About",
             image = Icons.Filled.Info,
-            route = "about"
+            route = NavRoutes.About.route
         )
     )
 }
