@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.supervital.navigationcompose.contacts.ContactsScreen
 import com.supervital.navigationcompose.route.NavBarItems
 import com.supervital.navigationcompose.route.NavRoutes
 import com.supervital.navigationcompose.ui.theme.NavigationComposeTheme
@@ -106,7 +107,7 @@ fun Home(){
 
 @Composable
 fun Contacts(){
-    Text("Contact Page", fontSize = 30.sp)
+    ContactsScreen()
 }
 
 @Composable
