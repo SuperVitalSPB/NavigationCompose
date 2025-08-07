@@ -11,7 +11,7 @@ import com.supervital.navigationcompose.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserViewModel(val application: Application) : ViewModel() {
+class UserViewModel(application: Application) : ViewModel() {
     val userList: LiveData<List<User>>
     private val repository: UserRepository
     var userName = mutableStateOf("")
@@ -74,9 +74,9 @@ class UserViewModel(val application: Application) : ViewModel() {
     fun deleteUser(id: Int) {
         repository.deleteUser(id)
     }
-
 }
 
+@Suppress("UNCHECKED_CAST")
 class UserViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return UserViewModel(application) as T
