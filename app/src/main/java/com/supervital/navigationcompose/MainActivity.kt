@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -28,6 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import com.supervital.navigationcompose.contacts.ContactsScreen
 import com.supervital.navigationcompose.route.NavBarItems
 import com.supervital.navigationcompose.route.NavRoutes
+import com.supervital.navigationcompose.screens.about.AboutScreen
+import com.supervital.navigationcompose.screens.home.HomeScreen
 import com.supervital.navigationcompose.ui.theme.NavigationComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -60,10 +61,11 @@ fun Main() {
         modifier = Modifier.padding(8.dp).fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        NavHost(navController, startDestination = NavRoutes.Home.route) {
-            composable(NavRoutes.Home.route) { Home() }
-            composable(NavRoutes.About.route) { About() }
-            composable(NavRoutes.Contacts.route) { Contacts() }
+        NavHost(navController = navController,
+            startDestination = NavRoutes.Home.route) {
+            composable(NavRoutes.Home.route) { HomeScreen() }
+            composable(NavRoutes.About.route) { AboutScreen() }
+            composable(NavRoutes.Contacts.route) { ContactsScreen() }
         }
 
         Box {
@@ -98,19 +100,4 @@ fun BottomNavigationBar(navController: NavController) {
             )
         }
     }
-}
-
-@Composable
-fun Home(){
-    Text("Home Page", fontSize = 30.sp)
-}
-
-@Composable
-fun Contacts(){
-    ContactsScreen()
-}
-
-@Composable
-fun About(){
-    Text("About Page", fontSize = 30.sp)
 }
