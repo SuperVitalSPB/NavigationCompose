@@ -5,10 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -16,6 +17,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -36,21 +40,69 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            NavigationComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                    ) {
-                        Main()
-                    }
-                }
-
-            }
+            MainScreenWithNavigationAndList()
         }
     }
 }
+
+    @Composable
+    fun MainScreenWithNavigationAndList() {
+        var selectedIndex by remember { mutableIntStateOf(0) }
+        val items = NavBarItems.BarItems // listOf("Home", "Settings") // For NavigationBar items
+        val selectedBarItem = NavBarItems.BarItems[selectedIndex]
+        Scaffold(
+            bottomBar = {
+                NavigationBar {
+                    items.forEachIndexed { index, item ->
+                        NavigationBarItem(
+                            icon = {
+                                Icon(
+                                    item.image,
+                                    contentDescription = item.title
+                                )
+                            },
+                            label = { Text(item.title) },
+                            selected = selectedIndex == index,
+                            onClick = { selectedIndex = index }
+                        )
+                    }
+                }
+            }
+        ) { innerPadding ->
+            NavigationComposeTheme {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(all = 8.dp)
+                        .padding(innerPadding) // Apply padding from Scaffold
+                ) {
+                    when (selectedBarItem.route) {
+                        NavRoutes.Home.route -> HomeScreen()
+                        NavRoutes.Contacts.route -> ContactsScreen()
+                        NavRoutes.About.route -> AboutScreen()
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun HomeContent() {
+        val dataItems = List(50) { "List Item $it" } // Example data for LazyColumn
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(dataItems) { item ->
+                Text(text = item, modifier = Modifier.padding(16.dp))
+            }
+        }
+    }
+
+    @Composable
+    fun SettingsContent() {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Text(text = "Settings Screen Content", modifier = Modifier.padding(16.dp))
+            // Add more settings-related UI here
+        }
+    }
 
 @Composable
 fun Main() {
@@ -58,7 +110,9 @@ fun Main() {
     val navController = rememberNavController()
 
     Column(
-        modifier = Modifier.padding(8.dp).fillMaxSize(),
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         NavHost(navController = navController,
@@ -68,9 +122,7 @@ fun Main() {
             composable(NavRoutes.Contacts.route) { ContactsScreen() }
         }
 
-        Box {
-            BottomNavigationBar(navController = navController)
-        }
+        BottomNavigationBar(navController = navController)
     }
 }
 

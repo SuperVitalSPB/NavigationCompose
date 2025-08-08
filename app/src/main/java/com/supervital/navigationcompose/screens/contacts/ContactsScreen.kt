@@ -3,6 +3,7 @@ package com.supervital.navigationcompose.contacts
 import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -73,50 +75,56 @@ fun Main(vm: UserViewModel) {
                 }
             }
         )
+        Row {
+            OutlinedTextField(
+                value = vm.userAge.value,
+                label = { Text("Age") },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(0.5F),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                ),
+                onValueChange = { vm.changeAge(it) }
+            )
 
-        OutlinedTextField(
-            value =  vm.userAge.value,
-            label = { Text("Age") },
-            modifier = Modifier
-                .padding(8.dp),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
-            ),
-            onValueChange = { vm.changeAge(it) }
-        )
-
-        Button(
-            onClick = {
-                vm.apply {
-                    addUser()
-                    userName.value = ""
-                    userAge.value = ""
-                    checkData()
-                    focusRequester.requestFocus()
-                }
-            },
-            enabled = resultCheck is ResultCheck.ResultOk,
-            modifier = Modifier
-                .padding(8.dp),
-        ) { Text(
-            text = "Add",
-            fontSize = 24.sp
-        ) }
-
+            Button(
+                onClick = {
+                    vm.apply {
+                        addUser()
+                        userName.value = ""
+                        userAge.value = ""
+                        checkData()
+                        focusRequester.requestFocus()
+                    }
+                },
+                enabled = resultCheck is ResultCheck.ResultOk,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(0.3F)
+                    .align(Alignment.Bottom),
+            ) {
+                Text(
+                    text = "Add",
+                    fontSize = 24.sp
+                )
+            }
+        }
         UserList(
             users = userList,
             delete = { vm.deleteUser(it) }
         )
+
     }
 }
 
 @Composable
 fun UserList(users: List<User>,
              delete: (Int) -> Unit) {
+    UserTitleRow()
     LazyColumn(
         modifier =  Modifier.fillMaxWidth()
     ) {
-        item {UserTitleRow() }
         items(users) {
                 user -> UserRow(user) { delete(user.id) }
         }
@@ -167,6 +175,7 @@ fun UserRow(user: User, onDelete: (Int) -> Unit) {
 
 @Composable
 fun UserTitleRow() {
+    Spacer (modifier = Modifier.padding(8.dp))
     Row(
         modifier = Modifier
             .background(Color.LightGray)
@@ -194,4 +203,5 @@ fun UserTitleRow() {
         )
         Spacer(modifier = Modifier.weight(0.2f))
     }
+    Spacer (modifier = Modifier.padding(4.dp))
 }
