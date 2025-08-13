@@ -1,6 +1,7 @@
 package com.supervital.navigationcompose.route
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -16,6 +17,11 @@ object NavBarItems {
             title = "Contacts",
             image = Icons.Filled.Face,
             route = NavRoutes.Contacts.route
+        ),
+        BarItem(
+            title = "Weather",
+            image = Icons.Filled.DateRange,
+            route = NavRoutes.Weather.route
         ),
         BarItem(
             title = "About",
