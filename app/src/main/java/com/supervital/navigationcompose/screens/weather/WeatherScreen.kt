@@ -1,5 +1,6 @@
 package com.supervital.navigationcompose.screens.weather
 
+import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.supervital.navigationcompose.R
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun WeatherScreen() {
@@ -53,7 +56,7 @@ fun WeatherScreen() {
                 ) {
                     Text(
                         modifier = Modifier.padding(top = 8.dp, start = 8.dp),
-                        text = "14.08.2025",
+                        text = getCurrentDate(),
                         style = TextStyle(fontSize = 15.sp),
                         color = Color.White
                     )
@@ -66,7 +69,7 @@ fun WeatherScreen() {
                     )
                 }
                 Text(
-                    text = "Madrid",
+                    text = "Gatchina, Dilitsi",
                     style = TextStyle(fontSize = 24.sp),
                     color = Color.White
                 )
@@ -117,36 +120,5 @@ fun WeatherScreen() {
     }
 }
 
-/*
-    val state = remember {
-        mutableStateOf("Unknown")
-    }
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight(0.5f)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Temperature in $name: ${state.value} Cº")
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Button(onClick = {
-                // getData(name, context, state)
-            }, modifier = Modifier.fillMaxWidth().padding(5.dp)) {
-                Text(text = "Refresh")
-            }
-        }
-
-    }
-
-androidx.compose.ui:io.coil-kt:coil-compose:2.0.0-rc01.
-"io.coil-kt:coil-compose:2.0.0-rc01"
-
-*/
+private fun getCurrentDate(): String =
+    SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
