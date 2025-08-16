@@ -1,6 +1,5 @@
 package com.supervital.navigationcompose.screens.weather
 
-import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.supervital.navigationcompose.R
+import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 @Composable
 fun WeatherScreen() {
@@ -121,4 +120,4 @@ fun WeatherScreen() {
 }
 
 private fun getCurrentDate(): String =
-    SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
+    SimpleDateFormat("dd.MM.yyyy").format(Date())
