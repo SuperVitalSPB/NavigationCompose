@@ -1,5 +1,6 @@
 package com.supervital.navigationcompose.screens.weather
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,6 +38,8 @@ import com.supervital.navigationcompose.route.NavRoutes
 import com.supervital.navigationcompose.screens.about.AboutScreen
 import com.supervital.navigationcompose.screens.home.HomeScreen
 import com.supervital.navigationcompose.ui.theme.NavigationComposeTheme
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 @Composable
@@ -109,7 +112,7 @@ fun WeatherScreen() {
                 ) {
                     Text(
                         modifier = Modifier.padding(top = 8.dp, start = 8.dp),
-                        text = "14.08.2025",
+                        text = getCurrentDate(),
                         style = TextStyle(fontSize = 15.sp),
                         color = Color.White
                     )
@@ -122,7 +125,7 @@ fun WeatherScreen() {
                     )
                 }
                 Text(
-                    text = "Madrid",
+                    text = "Gatchina, Dilitsi",
                     style = TextStyle(fontSize = 24.sp),
                     color = Color.White
                 )
@@ -173,36 +176,6 @@ fun WeatherScreen() {
     }
 }
 
-/*
-    val state = remember {
-        mutableStateOf("Unknown")
-    }
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight(0.5f)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Temperature in $name: ${state.value} Cº")
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Button(onClick = {
-                // getData(name, context, state)
-            }, modifier = Modifier.fillMaxWidth().padding(5.dp)) {
-                Text(text = "Refresh")
-            }
-        }
-
-    }
-
-androidx.compose.ui:io.coil-kt:coil-compose:2.0.0-rc01.
-"io.coil-kt:coil-compose:2.0.0-rc01"
-
-*/
+@SuppressLint("SimpleDateFormat")
+private fun getCurrentDate() =
+    SimpleDateFormat("dd.MM.yyyy").format(Date())
