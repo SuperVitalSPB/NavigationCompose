@@ -66,7 +66,7 @@ fun WeatherScreen() {
                     )
                 }
                 Text(
-                    text = "Madrid",
+                    text = "XXX",
                     style = TextStyle(fontSize = 24.sp),
                     color = Color.White
                 )
