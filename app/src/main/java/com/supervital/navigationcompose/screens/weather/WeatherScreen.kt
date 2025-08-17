@@ -1,6 +1,5 @@
 package com.supervital.navigationcompose.screens.weather
 
-import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,8 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -25,8 +31,55 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.supervital.navigationcompose.R
-import java.util.Date
-import java.util.Locale
+import com.supervital.navigationcompose.contacts.ContactsScreen
+import com.supervital.navigationcompose.route.NavBarItems
+import com.supervital.navigationcompose.route.NavRoutes
+import com.supervital.navigationcompose.screens.about.AboutScreen
+import com.supervital.navigationcompose.screens.home.HomeScreen
+import com.supervital.navigationcompose.ui.theme.NavigationComposeTheme
+
+
+@Composable
+fun MainScreenWithNavigationAndListScreen() {
+    var selectedIndex by remember { mutableIntStateOf(0) }
+    val items = NavBarItems.BarItems
+    val selectedBarItem = NavBarItems.BarItems[selectedIndex]
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                items.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        icon = {
+                            Icon(
+                                item.image,
+                                contentDescription = item.title
+                            )
+                        },
+                        label = { Text(item.title) },
+                        selected = selectedIndex == index,
+                        onClick = { selectedIndex = index }
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        NavigationComposeTheme {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(all = 5.dp)
+                    .padding(innerPadding) // Apply padding from Scaffold
+            ) {
+                when (selectedBarItem.route) {
+                    NavRoutes.Home.route -> HomeScreen()
+                    NavRoutes.Contacts.route -> ContactsScreen()
+                    NavRoutes.Weather.route -> WeatherScreen()
+                    NavRoutes.About.route -> AboutScreen()
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun WeatherScreen() {
@@ -56,7 +109,7 @@ fun WeatherScreen() {
                 ) {
                     Text(
                         modifier = Modifier.padding(top = 8.dp, start = 8.dp),
-                        text = getCurrentDate(),
+                        text = "14.08.2025",
                         style = TextStyle(fontSize = 15.sp),
                         color = Color.White
                     )
@@ -69,7 +122,7 @@ fun WeatherScreen() {
                     )
                 }
                 Text(
-                    text = "Gatchina, Dilitsi",
+                    text = "Madrid",
                     style = TextStyle(fontSize = 24.sp),
                     color = Color.White
                 )
@@ -120,5 +173,36 @@ fun WeatherScreen() {
     }
 }
 
-private fun getCurrentDate(): String =
-    SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
+/*
+    val state = remember {
+        mutableStateOf("Unknown")
+    }
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight(0.5f)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "Temperature in $name: ${state.value} Cº")
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            Button(onClick = {
+                // getData(name, context, state)
+            }, modifier = Modifier.fillMaxWidth().padding(5.dp)) {
+                Text(text = "Refresh")
+            }
+        }
+
+    }
+
+androidx.compose.ui:io.coil-kt:coil-compose:2.0.0-rc01.
+"io.coil-kt:coil-compose:2.0.0-rc01"
+
+*/
