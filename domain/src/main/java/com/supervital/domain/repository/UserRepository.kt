@@ -9,9 +9,9 @@ import kotlinx.coroutines.launch
 
 interface UserRepository {
 
-    fun getUsers(): Flow<List<UserInfo>>
+    fun getUsers(): LiveData<List<UserInfo>>
 
-    suspend fun getCountUsers(userName: String): List<Int>
+    suspend fun getCountUsers(userName: String): Int
 
     suspend fun addUser(userInfo: UserInfo)
 

@@ -1,31 +1,42 @@
 package com.supervital.feature.screens.contacts
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+// import androidx.hilt.navigation.compose.hiltViewModel
+import com.supervital.domain.model.UserInfo
 
 @Composable
-fun ContactsScreen() {
-    Text(text = "ddddddddddddddd")
-}
+fun ContactsScreen(viewModel: UserViewModel? = null /*= hiltViewModel()*/) { }
 /*
-    val owner = LocalViewModelStoreOwner.current
-
-    owner?.let {
-        val viewModel: UserViewModel = viewModel(
-            it,
-            "UserViewModel",
-            UserViewModelFactory(LocalContext.current.applicationContext as Application)
-        )
-        Main(viewModel)
-    }
-}
-
-@Composable
-fun Main(vm: UserViewModel) {
-    val userList by vm.userList.observeAsState(listOf())
-    val isUserNameExists by vm.foundUsers.observeAsState( false)
-    var name by remember { vm.userName }
-    var resultCheck by remember { vm.resultCheck }
+    val userList by viewModel.userList.observeAsState(listOf())
+    val isUserNameExists by viewModel.foundUsers.observeAsState( false)
+    var name by remember { viewModel.userName }
+    var resultCheck by remember { viewModel.resultCheck }
 
     val focusRequester = remember { FocusRequester() }
 
@@ -36,13 +47,13 @@ fun Main(vm: UserViewModel) {
             modifier = Modifier
                 .padding(8.dp)
                 .focusRequester(focusRequester),
-            onValueChange = { vm.changeName(it) },
+            onValueChange = { viewModel.changeName(it) },
             isError = isUserNameExists,
             supportingText = {
                 if (isUserNameExists) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = vm.getStringUserNameExists,
+                        text = viewModel.getStringUserNameExists,
                         color = MaterialTheme.colorScheme.error
                     )
                 }
@@ -50,7 +61,7 @@ fun Main(vm: UserViewModel) {
         )
         Row {
             OutlinedTextField(
-                value = vm.userAge.value,
+                value = viewModel.userAge.value,
                 label = { Text("Age") },
                 modifier = Modifier
                     .padding(8.dp)
@@ -58,12 +69,12 @@ fun Main(vm: UserViewModel) {
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
                 ),
-                onValueChange = { vm.changeAge(it) }
+                onValueChange = { viewModel.changeAge(it) }
             )
 
             Button(
                 onClick = {
-                    vm.apply {
+                    viewModel.apply {
                         addUser()
                         userName.value = ""
                         userAge.value = ""
@@ -85,15 +96,16 @@ fun Main(vm: UserViewModel) {
         }
         UserList(
             users = userList,
-            delete = { vm.deleteUser(it) }
+            delete = { it?.let{ viewModel.deleteUser(it) } }
         )
 
     }
 }
+*/
 
 @Composable
-fun UserList(users: List<User>,
-             delete: (Int) -> Unit) {
+fun UserList(users: List<UserInfo>,
+             delete: (Int?) -> Unit) {
     UserTitleRow()
     LazyColumn(
         modifier =  Modifier.fillMaxWidth()
@@ -105,16 +117,18 @@ fun UserList(users: List<User>,
 }
 
 @Composable
-fun UserRow(user: User, onDelete: (Int) -> Unit) {
+fun UserRow(user: UserInfo, onDelete: (Int?) -> Unit) {
     // val onItemClick = { id: Int -> selectedId = id }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .background( if (user.id % 2 == 0)
-                Color.Green
-            else
-                Color.Transparent
+            .background( user.id?.let { id ->
+                if (id % 2 == 0)
+                    Color.Green
+                else
+                    Color.Transparent
+            } ?: Color.Gray
             )
             .clickable{
                 // onItemClick.invoke(user.id)
@@ -177,4 +191,4 @@ fun UserTitleRow() {
         Spacer(modifier = Modifier.weight(0.2f))
     }
     Spacer (modifier = Modifier.padding(4.dp))
-}*/
+}

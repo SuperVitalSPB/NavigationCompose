@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.supervital.domain"
+    namespace = "com.supervital.core"
     compileSdk = 36
 
     defaultConfig {
@@ -32,18 +32,20 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
     implementation(libs.dagger.core)
     implementation(libs.hilt.android)
     ksp(libs.dagger.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter)
 
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.javax.inject)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

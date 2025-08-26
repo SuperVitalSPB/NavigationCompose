@@ -5,28 +5,35 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.supervital.domain.model.UserInfo
+import com.supervital.domain.usecase.UsersCreateUseCase
+import com.supervital.domain.usecase.UsersDeleteUseCase
+import com.supervital.domain.usecase.UsersGetCountUseCase
+import com.supervital.domain.usecase.UsersListUseCase
+import com.supervital.feature.R
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel(application: Application) : ViewModel() {
-    //    val userList: LiveData<List<User>>
-//    private val repository: UserRepository
+// @HiltViewModel
+class UserViewModel
+    @Inject
+    constructor (
+        private val application: Application,
+        private val usersCreateUseCase: UsersCreateUseCase,
+        private val usersDeleteUseCase: UsersDeleteUseCase,
+        private val usersGetCountUseCase: UsersGetCountUseCase,
+        private val usersListUseCase: UsersListUseCase) : ViewModel() {
+
+    val userList = usersListUseCase()
     var userName = mutableStateOf("")
     var resultCheck = mutableStateOf(Any())
     var userAge = mutableStateOf("")
     private val _foundUsers = MutableLiveData<Boolean>()
     val foundUsers: LiveData<Boolean> = _foundUsers
-}
-/*
     val getStringUserNameExists = application.getString(R.string.user_name_exists)
-
-    init {
-        // Строит базу данных (если она еще не существует)
-        val userDb = UserRoomDatabase.getInstance(application)
-        val userDao = userDb.userDao
-
-        repository = UserRepository(userDao)
-        userList = repository.userList
-    }
 
     fun changeName(value: String) {
         userName.value = value
@@ -40,7 +47,7 @@ class UserViewModel(application: Application) : ViewModel() {
             return
         }
         viewModelScope.launch (Dispatchers.IO ) {
-            val isError = repository.getCountUsers(userName.value).get(0) != 0
+            val isError = usersGetCountUseCase(userName.value) != 0
             _foundUsers.postValue(isError)
             if (isError && resultCheck.value is ResultCheck.ResultOk) {
                 resultCheck.value = ResultCheck.NameExists()
@@ -65,18 +72,15 @@ class UserViewModel(application: Application) : ViewModel() {
     }
 
     fun addUser() {
-        repository.addUser(User(userName.value, userAge.value.toInt()))
+        viewModelScope.launch {
+            usersCreateUseCase(UserInfo(name = userName.value, age = userAge.value.toInt()))
+        }
     }
 
     fun deleteUser(id: Int) {
-        repository.deleteUser(id)
-    }
-}
-*/
-@Suppress("UNCHECKED_CAST")
-class UserViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return UserViewModel(application) as T
+        viewModelScope.launch {
+            usersDeleteUseCase(id)
+        }
     }
 }
 

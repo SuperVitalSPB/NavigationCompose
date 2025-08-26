@@ -10,7 +10,7 @@ fun UserEntry.map() = UserInfo(
 )
 
 fun UserInfo.map() = UserEntry(
-        id = this.id,
+        id = this.id ?: 0,
         name = this.name,
         age = this.age
 )
