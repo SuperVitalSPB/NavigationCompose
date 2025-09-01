@@ -1,4 +1,4 @@
-package com.drweb.core.di.module
+package com.supervital.core.di.module
 
 import android.app.Application
 import android.app.NotificationManager
@@ -12,13 +12,12 @@ import android.os.Build
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
-import com.drweb.core.manager.ResourceManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Module
-class ContextModule(private val application: Application) {
+// @Module
+class ContextModule(private val application: Application) /*{
 
     @Singleton
     @Provides
@@ -27,12 +26,6 @@ class ContextModule(private val application: Application) {
     @Singleton
     @Provides
     fun provideContext() : Context = application
-
-    @Singleton
-    @Provides
-    fun provideResourceManager() : ResourceManager {
-        return ResourceManager(application.resources)
-    }
 
     @Singleton
     @Provides
@@ -83,4 +76,4 @@ class ContextModule(private val application: Application) {
         return application.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
     }
 
-}
+}*/
